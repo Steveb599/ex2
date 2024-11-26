@@ -212,10 +212,10 @@ int main()
 					break;
 				}
 			}
-
+			temp = num;
 			for (int i = 0; i < numsDigit; i++)
 			{
-				reversedNumber += temp % 10;
+				reversedNumber = reversedNumber * 10 + temp % 10;
 				temp /= 10;
 			};
 
