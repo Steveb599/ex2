@@ -43,7 +43,7 @@ int main()
 			char symbol1, symbol2, symbol3;
 			int faceSize;
 
-			printf("Enter symbols for the eyes, nose, and mouth (separated by spaces):\n");
+			printf("Enter symbols for the eyes, nose, and mouth:\n");
 			scanf(" %c %c %c", &symbol1, &symbol2, &symbol3);
 			printf("Enter face size:\n");
 			scanf(" %d", &faceSize);
@@ -81,8 +81,8 @@ int main()
 		case 2:
 		{
 			int num2, numsDigitCount = 0, rightCount = 0, leftCount = 0;
-			printf("Please enter a number:\n");
-			scanf("%d", &num2);
+			printf("Enter a number:\n");
+			scanf(" %d", &num2);
 
 			while (num2 <= 0)
 			{
@@ -100,7 +100,7 @@ int main()
 			// if number has only one digit, then its obviously a balanced number
 			if (numsDigitCount == 1)
 			{
-				printf("The number is balanced and brings harmony!\n");
+				printf("This number is balanced and brings harmony!\n");
 				break;
 			}
 
@@ -236,7 +236,7 @@ int main()
 				scanf("%d", &num5);
 			}
 
-			printf("Between 1 and %d, these numbers bring happiness: ", num5);
+			printf("Between 1 and %d only these numbers bring happiness: ", num5);
 			for (int i = 1; i <= num5; i++)
 			{
 				currentNum = i;
@@ -263,7 +263,7 @@ int main()
 		case 6:
 		{
 			int cheer = 0, smile = 0;
-			printf("Enter a smile and a cheer number:\n");
+			printf("Enter a smile and cheer number:\n");
 			// cleaning the buffer
 			scanf("%*[^\n]");
 			scanf("%*c");
@@ -282,7 +282,7 @@ int main()
 			scanf("%d", &n);
 			while (n <= 0)
 			{
-				printf("Only positive number is allowed, please try again:\n");
+				printf("Only positive maximum number is allowed, please try again:\n");
 				scanf("%d", &n);
 			}
 
