@@ -8,20 +8,8 @@ Assignment: ex2
 int main()
 {
 	int optionNumber;
-	printf("Choose an option:\n"
-		   "1. Happy Face\n"
-		   "2. Balanced Number\n"
-		   "3. Generous Number\n"
-		   "4. Circle Of Joy\n"
-		   "5. Happy Numbers\n"
-		   "6. Festival Of Laughter\n"
-		   "7. Exit\n");
-
-	scanf("%d", &optionNumber);
-	while (optionNumber < 1 || optionNumber > 7)
+	do // I run a loop that gets the option and validates that its in the right range
 	{
-		printf("This option is not available, please try again.\n");
-
 		printf("Choose an option:\n"
 			   "1. Happy Face\n"
 			   "2. Balanced Number\n"
@@ -32,50 +20,56 @@ int main()
 			   "7. Exit\n");
 
 		scanf("%d", &optionNumber);
-	}
-	// Case 1: Draw Happy Face with given symbols for eyes, nose and mouse
-	/* Example:
-	 * n = 3:
-	 * 0   0
-	 *   o
-	 * \___/
-	 */
 
-	// Case 1
-	while (optionNumber != 7)
-	{
+		while (optionNumber < 1 || optionNumber > 7)
+		{
+			printf("This option is not available, please try again.\n");
+			printf("Choose an option:\n"
+				   "1. Happy Face\n"
+				   "2. Balanced Number\n"
+				   "3. Generous Number\n"
+				   "4. Circle Of Joy\n"
+				   "5. Happy Numbers\n"
+				   "6. Festival Of Laughter\n"
+				   "7. Exit\n");
+
+			scanf("%d", &optionNumber);
+		}
+
 		switch (optionNumber)
 		{
 		case 1:
 		{
 			char symbol1, symbol2, symbol3;
 			int faceSize;
-			printf("Enter symbols for the eyes, nose, and mouse:\n");
-			scanf("%c %c %c", &symbol1, &symbol2, &symbol3);
+
+			printf("Enter symbols for the eyes, nose, and mouth (separated by spaces):\n");
+			scanf(" %c %c %c", &symbol1, &symbol2, &symbol3);
 			printf("Enter face size:\n");
-			scanf("%d", &faceSize);
-			while (faceSize <= 0 || faceSize % 2 == 0)
+			scanf(" %d", &faceSize);
+
+			while (faceSize <= 0 || faceSize % 2 == 0) // check that face size is positive and an odd number
 			{
 				printf("The face's size must be an odd and positive number, please try again:\n");
 				scanf("%d", &faceSize);
 			}
+
+			// Print eyes
 			printf("%c", symbol1);
 			for (int i = 0; i < faceSize; i++)
 			{
 				printf(" ");
 			}
 			printf("%c\n", symbol1);
-			int halfFaceSize = faceSize / 2;
-			for (int i = 0; i < halfFaceSize + 1; i++)
+
+			// Print nose
+			for (int i = 0; i < faceSize / 2 + 1; i++)
 			{
 				printf(" ");
 			}
-			printf("%c", symbol2);
-			for (int i = halfFaceSize + 1; i <= faceSize; i++)
-			{
-				printf(" ");
-			}
-			printf("\n");
+			printf("%c\n", symbol2);
+
+			// Print mouth
 			printf("\\");
 			for (int i = 0; i < faceSize; i++)
 			{
@@ -84,18 +78,10 @@ int main()
 			printf("/\n");
 			break;
 		}
-
-		// Case 2: determine whether the sum of all digits to the left of the middle digit(s)
-		// and the sum of all digits to the right of the middle digit(s) are equal
-		/* Examples:
-		Balanced: 1533, 450810, 99
-		Not blanced: 1552, 34
-		Please notice: the number has to be bigger than 0.
-		*/
 		case 2:
 		{
 			int num2, numsDigitCount = 0, rightCount = 0, leftCount = 0;
-			printf("Please enter a number\n");
+			printf("Please enter a number:\n");
 			scanf("%d", &num2);
 
 			while (num2 <= 0)
@@ -104,52 +90,49 @@ int main()
 				scanf("%d", &num2);
 			}
 
-			if (num2 < 10)
-			{
-				printf("The number is balanced and brings harmony!");
-			}
-			int shallowCopy = num2;
+			int shallowCopy = num2; // copying the number to another int so I can change the number to get the digits number
 			while (shallowCopy != 0)
 			{
-				shallowCopy = shallowCopy / 10;
+				shallowCopy /= 10;
 				numsDigitCount++;
 			}
 
-			int halfOfNumsDigitCount = numsDigitCount / 2;
-			printf("%d\n", halfOfNumsDigitCount);
+			// if number has only one digit, then its obviously a balanced number
+			if (numsDigitCount == 1)
+			{
+				printf("The number is balanced and brings harmony!\n");
+				break;
+			}
+
+			int halfOfNumsDigitCount = numsDigitCount / 2; // getting the half of numbers digit count so I can compare it later in the for loop
+			shallowCopy = num2;							   // setting the shallow copy as number again so I can make changes on the number in the for loop
 			for (int i = 0; i < numsDigitCount; i++)
 			{
-				int numDigit = num2 % 10;
-				num2 = num2 / 10;
-				if (numsDigitCount % 2 != 0 && i == halfOfNumsDigitCount + 1)
+				// extracting each digit from the copy of the number
+				int numDigit = shallowCopy % 10;
+				// diving the number by 10 to get the next digit on next for loop iteration
+				shallowCopy /= 10;
+
+				// Skip the middle digit if odd number of digits, so it won't calculate it and compare the counts without it
+				if (numsDigitCount % 2 != 0 && i == halfOfNumsDigitCount)
 				{
-					printf("%d", i);
-					rightCount += numDigit;
-					leftCount += numDigit;
+					continue;
 				}
 
+				// sums the right count and the left count
 				if (i < halfOfNumsDigitCount)
-				{
 					rightCount += numDigit;
-				}
 				else
-				{
 					leftCount += numDigit;
-				}
 			}
 
 			if (rightCount == leftCount)
 				printf("This number is balanced and brings harmony!\n");
 			else
 				printf("This number isn't balanced and destroys harmony.\n");
+
 			break;
 		}
-			// Case 3: determine whether the sum of the proper divisors (od an integer) is greater than the number itself
-			/* Examples:
-			Abudant: 12, 20, 24
-			Not Abudant: 3, 7, 10
-			Please notice: the number has to be bigger than 0.
-			*/
 
 		case 3:
 		{
@@ -163,31 +146,26 @@ int main()
 				scanf("%d", &num3);
 			}
 
+			// checks if the index is a divisor of the number and then sums all the divisors of the number
 			for (int i = 1; i < num3; i++)
 			{
 				if (num3 % i == 0)
 					divisorsSum += i;
 			}
 
+			// checks if the sum of all the divisors is greater than the number itself
 			if (divisorsSum > num3)
-			{
 				printf("This number is generous!\n");
-			}
 			else
 				printf("This number does not share.\n");
+
 			break;
 		}
-			// Case 4: determine wether a number is a prime.
-			/* Examples:
-			This one brings joy: 3, 5, 11
-			This one does not bring joy: 15, 8, 99
-			Please notice: the number has to be bigger than 0.
-			*/
 
 		case 4:
 		{
 			int num, notPrime = 0;
-			printf("Please enter a number\n");
+			printf("Enter a number:\n");
 			scanf("%d", &num);
 
 			while (num <= 0)
@@ -195,15 +173,19 @@ int main()
 				printf("Only positive number is allowed, please try again:\n");
 				scanf("%d", &num);
 			}
+			// initializing a reveredNumber which will be the reverse of the original number, the nums digit and a temp which will be equal to the number so I can change it and make opeartions without changing the original number
 			int reversedNumber = 0;
 			int numsDigit = 0;
 			int temp = num;
+
+			// getting the total number digits
 			while (temp > 0)
 			{
 				temp /= 10;
 				numsDigit++;
 			}
 
+			// checks if the number is prime (if it has a divisors other than 1 and the number itself)
 			for (int i = 2; i < num; i++)
 			{
 				if (num % i == 0)
@@ -212,14 +194,18 @@ int main()
 					break;
 				}
 			}
-			temp = num;
+			temp = num; // setting temp as num again so I can perform operation on the number
 			for (int i = 0; i < numsDigit; i++)
 			{
+				// - Take the last digit of temp (temp % 10) and add it to 'reversedNumber' by multiplying 'reversedNumber' by 10 (shifting its digits to the left)
+				//   and then adding the last digit of temp
+				// - Remove the last digit from temp by dividing it by 10 (shifting the digits of temp to the right)
 				reversedNumber = reversedNumber * 10 + temp % 10;
 				temp /= 10;
 			};
 
-			for (int i = 1; i < reversedNumber; i++)
+			// checking if the reversed number of the number is a prime or not
+			for (int i = 2; i < reversedNumber; i++)
 			{
 				if (reversedNumber % i == 0)
 				{
@@ -228,29 +214,34 @@ int main()
 				}
 			}
 
+			// printing the required print with the condition if its not prime (true = 1) or (false = 0)
 			if (notPrime)
 			{
-				printf("This one does not bring joyn");
+				printf("The circle remains incomplete.\n");
 			}
 			else
-				printf("This one brings joy.\n");
+				printf("This number completes the circle of joy!\n");
 			break;
 		}
+
 		case 5:
 		{
-			int sum5, num5, digit5 = 0, currentNum;
+			int num5, sum5, digit5, currentNum;
 			printf("Enter a number:\n");
 			scanf("%d", &num5);
+
 			while (num5 <= 0)
 			{
 				printf("Only positive number is allowed, please try again:\n");
 				scanf("%d", &num5);
 			}
-			printf("Between 1 and %d only these numbers bring happiness: ", num5);
+
+			printf("Between 1 and %d, these numbers bring happiness: ", num5);
 			for (int i = 1; i <= num5; i++)
 			{
 				currentNum = i;
-				while (currentNum != 1 && currentNum != 4)
+				while (currentNum != 1 && currentNum != 4) // the while loop continues until 1 (happy number) or 4 (not a happy number)
+				// all of the not happy numbers eventually the sum of their digits becomes 4 (by google)
 				{
 					sum5 = 0;
 					while (currentNum > 0)
@@ -259,25 +250,27 @@ int main()
 						sum5 += digit5 * digit5;
 						currentNum /= 10;
 					}
-					currentNum = sum5;
+					currentNum = sum5; //  setting the current num as the sum to check if we can get out of the first while loop
 				}
 
 				if (currentNum == 1)
-				{
 					printf("%d ", i);
-				}
 			}
+			printf("\n");
+			break;
 		}
+
 		case 6:
 		{
-			int num6 = 0;
 			int cheer = 0, smile = 0;
 			printf("Enter a smile and a cheer number:\n");
+			// cleaning the buffer
 			scanf("%*[^\n]");
 			scanf("%*c");
 			scanf("smile: %d, cheer: %d", &smile, &cheer);
 			while (smile <= 0 || cheer <= 0 || cheer == smile)
 			{
+				// cleaning the buffer
 				scanf("%*[^\n]");
 				scanf("%*c");
 				printf("Only 2 different positive numbers in the given format are allowed for the festival, please try again:\n");
@@ -292,6 +285,7 @@ int main()
 				printf("Only positive number is allowed, please try again:\n");
 				scanf("%d", &n);
 			}
+
 			for (int i = 1; i <= n; i++)
 			{
 				if (i % cheer == 0 && i % smile == 0)
@@ -305,45 +299,15 @@ int main()
 				else
 					printf("%d\n", i);
 			}
+			break;
 		}
+
 		case 7:
-		{
-			printf("Thank you for your journey through Numeria!");
+			printf("Thank you for your journey through Numeria!\n");
 			return 0;
 		}
-		}
-	}
 
-	// Happy numbers: Print all the happy numbers between 1 to the given number.
-	// Happy number is a number which eventually reaches 1 when replaced by the sum of the square of each digit
-	/* Examples:
-	Happy :) : 7, 10
-	Not Happy :( : 5, 9
-	Please notice: the number has to be bigger than 0.
-	*/
+	} while (optionNumber != 7);
 
-	// int num5;
-	// printf("Please enter a number\n");
-	// scanf("%d", &num5);
-
-	// while (num5 <= 0) {
-	// 	printf("Only positive number is allowed, please try again:\n");
-	// 	scanf("%d", &num5);
-	// }
-
-	// printf("Between 1 and %d only these numbers bring happiness: 1 ", num5);
-	// for (int i=2; i<num5; i++) {
-	// 	int num6 = i;
-	// 	int sum = 0;
-	// 	while (num6 !== 1) {
-
-	// 	}
-	// }
-	// Festival of Laughter: Prints all the numbers between 1 the given number:
-	// and replace with "Smile!" every number that divided by the given smile number
-	// and replace with "Cheer!" every number that divided by the given cheer number
-	// and replace with "Festival!" every number that divided by both of them
-	/* Example:
-	6, smile: 2, cheer: 3 : 1, Smile!, Cheer!, Smile!, 5, Festival!
-	*/
+	return 0;
 }
